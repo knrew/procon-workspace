@@ -1,0 +1,9 @@
+alias rbuild="cargo build --bin main"
+alias rmain="cargo run --bin main"
+alias rsub="cargo run --bin submission"
+
+function rsample() {
+  bat test/sample-${1}.in
+  bat test/sample-${1}.out
+  cargo run --bin main < test/sample-${1}.in
+}

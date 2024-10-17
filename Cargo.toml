@@ -2,20 +2,11 @@
 name = "atcoder"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+default-run = "main"
 
 [[bin]]
 name = "main"
 path = "src/main.rs"
-required-features = ["reprol"]
-
-[[bin]]
-name = "submission"
-path = "src/submission.rs"
-
-# [features]
-# default = ["reprol"]
 
 [dependencies]
 itertools = "0.13.0"
@@ -23,4 +14,9 @@ itertools = "0.13.0"
 proconio = { version = "0.5.0", features = ["derive"] }
 rand = "0.8.5" 
 # superslice = "1.0.0"
-reprol = { path = "../reprol/", package = "reprol", optional = true }
+reprol = { path = "../reprol/", package = "reprol" }
+
+[workspace]
+resolver = "2"
+members = [ "./submission" ]
+

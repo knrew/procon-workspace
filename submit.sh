@@ -4,14 +4,26 @@
 
 ./bundle.sh
 
+function compile() {
+  cargo build --release --package submission
+}
+
+function run() {
+  oj t -S -c ./target/release/submission
+}
+
+function submit() {
+  oj submit $1 submission/submission.rs
+}
+
 if [ $# -ge 2 ]; then
-  command echo "too many argument(s)."
+  command echo "too many arguments."
   exit 1
 fi
 
 if [ $# == 1 ]; then
   if [ $1 != "f" ] && [ $1 != "force" ]; then
-    command echo "invalid argument."
+    command echo "invalid argument(s)."
     exit 1
   else 
     force_submit=1
@@ -27,14 +39,14 @@ if [ ! -e .url.txt ]; then
 fi
 url=$(cat .url.txt)
 
-cargo build --release --bin submission
+compile
 if [ $? != 0 ]; then
   command echo "compile error."
   command echo "submission has cancelled."
   exit 1
 fi 
 
-oj t -S -c ./target/release/submission
+run
 test_passed=$?
 
 if [ $test_passed == 0 ]; then
@@ -44,7 +56,7 @@ else
 fi
 
 if [ $test_passed == 0 ] || [ $force_submit == 1 ]; then
-  oj submit $url src/submission.rs
+  submit $url
 else     
   command echo "submission has cancelled."
 fi

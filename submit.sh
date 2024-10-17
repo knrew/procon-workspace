@@ -27,14 +27,14 @@ if [ ! -e .url.txt ]; then
 fi
 url=$(cat .url.txt)
 
-cargo build --release --bin $submission
+cargo build --release --bin submission
 if [ $? != 0 ]; then
   command echo "compile error."
   command echo "submission has cancelled."
   exit 1
 fi 
 
-oj t -S -c ./target/release/$submission
+oj t -S -c ./target/release/submission
 test_passed=$?
 
 if [ $test_passed == 0 ]; then
@@ -44,7 +44,7 @@ else
 fi
 
 if [ $test_passed == 0 ] || [ $force_submit == 1 ]; then
-  oj submit $url src/${submission}.rs
+  oj submit $url src/submission.rs
 else     
   command echo "submission has cancelled."
 fi

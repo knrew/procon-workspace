@@ -1,5 +1,5 @@
 alias rbuild="cargo build --bin main"
-alias rmain="cargo run --bin main"
+alias rmain="cargo run --bin main  --features reprol"
 alias rsub="cargo run --bin submission"
 
 function rsample() {

@@ -8,15 +8,19 @@ edition = "2021"
 [[bin]]
 name = "main"
 path = "src/main.rs"
+required-features = ["reprol"]
 
 [[bin]]
 name = "submission"
 path = "src/submission.rs"
 
+# [features]
+# default = ["reprol"]
+
 [dependencies]
 itertools = "0.13.0"
 # petgraph = "0.6.5"
 proconio = { version = "0.5.0", features = ["derive"] }
-rand = "0.8.5"
+rand = "0.8.5" 
 # superslice = "1.0.0"
-reprol = { path = "../reprol/", package = "reprol" }
+reprol = { path = "../reprol/", package = "reprol", optional = true }

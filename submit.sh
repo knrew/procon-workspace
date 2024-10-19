@@ -13,7 +13,7 @@ function run() {
 }
 
 function submit() {
-  oj submit $1 submission/submission.rs
+  oj submit -l rust $1 submission/submission.rs
 }
 
 if [ $# -ge 2 ]; then

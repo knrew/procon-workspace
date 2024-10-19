@@ -1,8 +1,8 @@
 alias bmain="cargo build"
 alias rmain="cargo run"
 
-alias bsub="cargo build --package submission"
-alias rsub="cargo run --package submission"
+alias bsub="./bundle.sh && cargo build --package submission"
+alias rsub="./bundle.sh && cargo run --package submission"
 
 alias sand="cargo run --example sandbox"
 

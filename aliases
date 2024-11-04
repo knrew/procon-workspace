@@ -6,6 +6,8 @@ alias rsub="./bundle.sh && cargo run --package submission"
 
 alias sand="cargo run --example sandbox"
 
+alias clipsub="./bundle.sh && cat submission/submission.rs | clip"
+
 function rsample() {
   ./bundle.sh
   bat test/sample-${1}.in

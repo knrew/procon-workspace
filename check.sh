@@ -16,7 +16,7 @@ function release() {
 
 if [ $# == 0 ] || [ $1 == "d" ] || [ $1 == "debug" ]; then
   debug
-elif [ $1 == "r" ] || [ $1 == "release" ]; then
+elif [ $# == 1 ] && ([ $1 == "r" ] || [ $1 == "release" ]); then
   release
 else
   command echo "invalid argument(s)."

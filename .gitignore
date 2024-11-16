@@ -1,5 +1,5 @@
 /target
-/src/*
-/examples/*
 /test
 /.url.txt
+/submission/*
+!/submission/Cargo.toml

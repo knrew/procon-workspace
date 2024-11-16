@@ -1,4 +1,5 @@
 #! /bin/env sh
+
 set -eu
 
 lib=~/codes/reprol/

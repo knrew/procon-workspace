@@ -36,6 +36,12 @@ fi
 url=$(cat .url.txt)
 
 ./bundle.sh
+if [ $? != 0 ]; then
+  command echo "failed to bundle."
+  command echo "submission has cancelled."
+  exit 1
+fi
+
 build
 if [ $? != 0 ]; then
   command echo "compile error."
@@ -48,13 +54,13 @@ test_passed=$?
 
 if [ $test_passed == 0 ]; then
   command echo "test passed."
+  submit $url
 else
   command echo -e "\e[31m!!!test failed!!!\e[m"
-fi
-
-if [ $test_passed == 0 ] || [ $force_submit == 1 ]; then
-  submit $url
-else     
-  command echo "submission has cancelled."
-  exit 1
+  if [ $force_submit == 1 ]; then
+    submit $url
+  else     
+    command echo "submission has cancelled."
+    exit 1
+  fi
 fi

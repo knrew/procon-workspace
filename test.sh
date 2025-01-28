@@ -2,26 +2,28 @@
 
 set -eu
 
-function debug() {
-  cargo build --package submission
-  oj t -S -c ./target/debug/submission
-}
+# oj test
+if [ $# == 0 ] || [ $1 == "d" ]; then
+  cargo build
+  oj t -S -c ./target/debug/main
 
-function release() {
-  cargo build --release --package submission
-  oj t -S -c ./target/release/submission
-}
+# oj test(release)
+elif [ $# == 1 ] && [ $1 == "r" ]; then
+  cargo build --release
+  oj t -S -c ./target/release/main
 
-./bundle.sh
-if [ $? != 0 ]; then
-  command echo "failed to bundle."
-  exit 1
-fi
+# run single sample
+elif [ $# == 2 ] && [ $1 == "s" ]; then
+  [[ -f test/sample-${2}.in ]] && bat test/sample-${2}.in
+  [[ -f test/sample-${2}.out ]] && bat test/sample-${2}.out
+  cargo run < test/sample-${2}.in
 
-if [ $# == 0 ] || [ $1 == "debug" ] || [ $1 == "d" ]; then
-  debug
-elif [ $# == 1 ] && ([ $1 == "release" ] || [ $1 == "r" ]); then
-  release
+# run single sample(release)
+elif [ $# == 2 ] && [ $1 == "sr" ]; then
+  [[ -f test/sample-${2}.in ]] && bat test/sample-${2}.in
+  [[ -f test/sample-${2}.out ]] && bat test/sample-${2}.out
+  cargo run --release < test/sample-${2}.in
+
 else
   command echo "invalid argument(s)."
 fi

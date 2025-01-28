@@ -42,6 +42,12 @@ if [ $? != 0 ]; then
   exit 1
 fi
 
+
+if [ $force_submit == 1 ]; then
+  submit $url
+  exit 0
+fi
+
 build
 if [ $? != 0 ]; then
   command echo "compile error."
@@ -55,10 +61,6 @@ if [ $? == 0 ]; then
   submit $url
 else
   command echo -e "\e[31m!!!test failed!!!\e[m"
-  if [ $force_submit == 1 ]; then
-    submit $url
-  else     
-    command echo "submission has cancelled."
-    exit 1
-  fi
+  command echo "submission has cancelled."
+  exit 1
 fi

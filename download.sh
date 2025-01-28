@@ -18,5 +18,5 @@ fi
 
 url=$1
 
-oj download $url
 command echo $url > ./.url.txt 
+oj download $url

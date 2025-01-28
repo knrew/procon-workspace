@@ -50,9 +50,7 @@ if [ $? != 0 ]; then
 fi 
 
 run
-test_passed=$?
-
-if [ $test_passed == 0 ]; then
+if [ $? == 0 ]; then
   command echo "test passed."
   submit $url
 else

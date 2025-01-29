@@ -4,11 +4,11 @@ set -eu
 
 # build
 if [ $# == 0 ] || [ $1 == "d" ]; then
-  cargo build
+  cargo build --bin main
 
 # build(release)
 elif [ $# == 1 ] && [ $1 == "r" ]; then
-  cargo build --release
+  cargo build --release --bin main
 
 # build submission
 elif [ $# == 1 ] && [ $1 == "s" ]; then

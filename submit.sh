@@ -42,7 +42,6 @@ if [ $? != 0 ]; then
   exit 1
 fi
 
-
 if [ $force_submit == 1 ]; then
   submit $url
   exit 0

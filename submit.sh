@@ -57,9 +57,10 @@ fi
 run
 if [ $? == 0 ]; then
   command echo "test passed."
+  command echo -e "submitting to \e[34m${url}\e[m..."
   submit $url
 else
-  command echo -e "\e[31m!!!test failed!!!\e[m"
+  command echo -e "\e[31mtest failed!\e[m"
   command echo "submission has cancelled."
   exit 1
 fi

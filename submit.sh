@@ -44,7 +44,7 @@ fi
 
 if [ $force_submit == 1 ]; then
   submit $url
-  exit 0
+  exit $?
 fi
 
 build

@@ -42,17 +42,17 @@ if [ $? != 0 ]; then
   exit 1
 fi
 
-if [ $force_submit == 1 ]; then
-  submit $url
-  exit $?
-fi
-
 build
 if [ $? != 0 ]; then
   command echo "compile error."
   command echo "submission has cancelled."
   exit 1
-fi 
+fi
+
+if [ $force_submit == 1 ]; then
+  submit $url
+  exit $?
+fi
 
 run
 if [ $? == 0 ]; then

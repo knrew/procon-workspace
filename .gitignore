@@ -3,3 +3,4 @@
 /.url.txt
 /submission/*
 !/submission/Cargo.toml
+src/*

@@ -40,4 +40,5 @@ elif [ $# == 2 ] && [ $1 == "sr" ]; then
 
 else
   command echo "invalid argument(s)."
+  exit 1
 fi

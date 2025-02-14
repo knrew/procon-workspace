@@ -10,13 +10,8 @@ if [ $# == 0 ] || [ $1 == "d" ]; then
 elif [ $# == 1 ] && [ $1 == "r" ]; then
   cargo build --release --bin main
 
-# build submission
-elif [ $# == 1 ] && [ $1 == "s" ]; then
-  ./bundle.sh
-  cargo build --package submission
-
 # build submission(release)
-elif [ $# == 1 ] && [ $1 == "sr" ]; then
+elif [ $# == 1 ] && ( [ $1 == "s" ] || [ $1 == "sub" ] ); then
   ./bundle.sh
   cargo build --release --package submission
  

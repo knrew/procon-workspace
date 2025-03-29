@@ -136,9 +136,6 @@ dependencies = [
 [[package]]
 name = "reprol"
 version = "0.1.0"
-dependencies = [
- "rand",
-]
 
 [[package]]
 name = "submission"

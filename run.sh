@@ -21,7 +21,7 @@ elif [ $# == 1 ] && [ $1 == "sub" ]; then
 # run single sample
 elif [ $# == 2 ] && [ $1 == "s" ]; then
   if ! [ -f test/sample-${2}.in ]; then
-    command echo "\"test/sample-${2}.in\" not found."
+    command echo "\"test/sample-${2}.in\" not found." >&2 
     exit 1
   fi 
   bat test/sample-${2}.in
@@ -31,7 +31,7 @@ elif [ $# == 2 ] && [ $1 == "s" ]; then
 # run single sample(release)
 elif [ $# == 2 ] && [ $1 == "sr" ]; then
   if ! [ -f test/sample-${2}.in ]; then
-    command echo "\"test/sample-${2}.in\" not found."
+    command echo "\"test/sample-${2}.in\" not found." >&2
     exit 1
   fi
   bat test/sample-${2}.in
@@ -39,6 +39,6 @@ elif [ $# == 2 ] && [ $1 == "sr" ]; then
   cargo run --release < test/sample-${2}.in
 
 else
-  command echo "invalid argument(s)."
+  command echo "invalid argument(s)." >&2
   exit 1
 fi

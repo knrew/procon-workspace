@@ -13,13 +13,13 @@ function submit() {
 }
 
 if [ $# -ge 2 ]; then
-  command echo "too many arguments."
+  command echo "too many arguments." >&2
   exit 1
 fi
 
 if [ $# == 1 ]; then
   if [ $1 != "f" ] && [ $1 != "force" ]; then
-    command echo "invalid argument."
+    command echo "invalid argument." >&2
     exit 1
   else 
     force_submit=1
@@ -29,23 +29,23 @@ else
 fi
 
 if [ ! -e .url.txt ]; then
-  command echo "url file not found."
-  command echo "run download.sh."
+  command echo "url file not found." >&2
+  command echo "run download.sh." >&2
   exit 1
 fi
 url=$(cat .url.txt)
 
 ./bundle.sh
 if [ $? != 0 ]; then
-  command echo "failed to bundle."
-  command echo "submission has cancelled."
+  command echo "failed to bundle." >&2
+  command echo "submission has cancelled." >&2
   exit 1
 fi
 
 build
 if [ $? != 0 ]; then
-  command echo "compile error."
-  command echo "submission has cancelled."
+  command echo "compile error." >&2
+  command echo "submission has cancelled." >&2
   exit 1
 fi
 
@@ -60,7 +60,7 @@ if [ $? == 0 ]; then
   command echo -e "submitting to \e[34m${url}\e[m..."
   submit $url
 else
-  command echo -e "\e[31mtest failed!\e[m"
-  command echo "submission has cancelled."
+  command echo -e "\e[31mtest failed!\e[m" >&2
+  command echo "submission has cancelled." >&2
   exit 1
 fi

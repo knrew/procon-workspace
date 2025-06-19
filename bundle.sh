@@ -2,10 +2,10 @@
 
 set -eu
 
-lib=~/codes/reprol/
-src=./src/main.rs
-sub=./submission/submission.rs
+LIBRARY_DIR=~/codes/reprol/
+SOURCE_FILE=./src/main.rs
+SUBMISSION_FILE=./submission/submission.rs
 
-rustfmt $src
-library-bundler -l $lib $src > $sub
-rustfmt $sub
+rustfmt $SOURCE_FILE
+library-bundler -l $LIBRARY_DIR $SOURCE_FILE > $SUBMISSION_FILE
+rustfmt $SUBMISSION_FILE

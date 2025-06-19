@@ -16,6 +16,6 @@ elif [ $# == 1 ] && ( [ $1 == "s" ] || [ $1 == "sub" ] ); then
   cargo build --release --package submission
  
 else 
-  command echo "invalid argument(s)."
+  command echo "invalid argument(s)." >&2
   exit 1
 fi

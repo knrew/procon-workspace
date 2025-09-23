@@ -2,41 +2,51 @@
 
 set -eu
 
+. ./common.sh
+
 # oj test
 if [ $# == 0 ] || [ $1 == "d" ]; then
-  cargo build --bin main
-  oj t -S -c ./target/debug/main
+  build_main_debug && \
+    oj t -S -c $RUN_MAIN_DEBUG
 
 # oj test(release)
 elif [ $# == 1 ] && [ $1 == "r" ]; then
-  cargo build --release --bin main
-  oj t -S -c ./target/release/main
+  build_main_release && \
+    oj t -S -c $RUN_MAIN_RELEASE
 
 # oj test(submission)
 elif [ $# == 1 ] && [ $1 == "sub" ]; then
-  ./bundle.sh
-  cargo build --release --package submission
-  oj t -S -c ./target/release/submission
+  ./bundle.sh && \
+    build_submission_release && \
+    oj t -S -c $RUN_SUBMISSION_RELEASE
 
 # run single sample
 elif [ $# == 2 ] && [ $1 == "s" ]; then
-  if ! [ -f test/sample-${2}.in ]; then
-    command echo "\"test/sample-${2}.in\" not found." >&2 
+  in=test/sample-${2}.in
+  out=test/sample-${2}.out
+  if ! [ -f $in ]; then
+    command echo "\"${in}\" not found." >&2
     exit 1
-  fi 
-  bat test/sample-${2}.in
-  [[ -f test/sample-${2}.out ]] && bat test/sample-${2}.out
-  cargo run < test/sample-${2}.in
+  fi
+  bat $in
+  [[ -f $out ]] && bat $out
+  build_main_debug && \
+    ./target/debug/main \ 
+    < $in
 
 # run single sample(release)
 elif [ $# == 2 ] && [ $1 == "sr" ]; then
-  if ! [ -f test/sample-${2}.in ]; then
-    command echo "\"test/sample-${2}.in\" not found." >&2
+  in=test/sample-${2}.in
+  out=test/sample-${2}.out
+  if ! [ -f $in ]; then
+    command echo "\"${in}\" not found." >&2
     exit 1
   fi
-  bat test/sample-${2}.in
-  [[ -f test/sample-${2}.out ]] && bat test/sample-${2}.out
-  cargo run --release < test/sample-${2}.in
+  bat $in
+  [[ -f $out ]] && bat $out
+  build_main_release && \
+    ./target/release/main \ 
+    < $in
 
 else
   command echo "invalid argument(s)." >&2

@@ -50,7 +50,7 @@ rand = "0.8.5"
 # rand_chacha = "0.3.1"
 # rand_core = "0.6.4"
 # rand_hc = "0.3.2"
-# rand_pcg = "0.3.1"
+rand_pcg = "0.3.1"
 # rand_distr = "0.4.3"
 # petgraph = "0.6.3"
 # indexmap = "2.0.0"
@@ -69,7 +69,7 @@ itertools = "0.11.0"
 # bitset-fixed = "0.1.0"
 proconio = { version = "0.4.5", features = ["derive"] }
 # text_io = "0.1.12"
-# rustc-hash = "1.1.0"
+rustc-hash = "1.1.0"
 # smallvec = "1.11.0"
 reprol = { path = "../reprol/", package = "reprol" }
 

@@ -1,12 +1,6 @@
 #! /bin/env sh
 
-function build() {
-  cargo build --release --package submission
-}
-
-function run() {
-  oj t -S -c ./target/release/submission
-}
+. ./common.sh
 
 function submit() {
   oj submit -l rust $1 submission/submission.rs
@@ -42,7 +36,7 @@ if [ $? != 0 ]; then
   exit 1
 fi
 
-build
+build_submission_release
 if [ $? != 0 ]; then
   command echo "compile error." >&2
   command echo "submission has cancelled." >&2
@@ -54,7 +48,7 @@ if [ $force_submit == 1 ]; then
   exit $?
 fi
 
-run
+oj t -S -c $RUN_SUBMISSION_RELEASE
 if [ $? == 0 ]; then
   command echo "test passed."
   command echo -e "submitting to \e[34m${url}\e[m..."

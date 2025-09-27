@@ -2,20 +2,20 @@
 
 . ./common.sh
 
-function submit() {
-  oj submit -l rust $1 submission/submission.rs
+submit() {
+  oj submit -l rust "$1" submission/submission.rs
 }
 
 if [ $# -ge 2 ]; then
-  command echo "too many arguments." >&2
+  echo "too many arguments." >&2
   exit 1
 fi
 
-if [ $# == 1 ]; then
-  if [ $1 != "f" ] && [ $1 != "force" ]; then
-    command echo "invalid argument." >&2
+if [ $# = 1 ]; then
+  if [ "$1" != "f" ] && [ "$1" != "force" ]; then
+    echo "invalid argument." >&2
     exit 1
-  else 
+  else
     force_submit=1
   fi
 else
@@ -23,38 +23,38 @@ else
 fi
 
 if [ ! -e .url.txt ]; then
-  command echo "url file not found." >&2
-  command echo "run download.sh." >&2
+  echo "url file not found." >&2
+  echo "run download.sh." >&2
   exit 1
 fi
 url=$(cat .url.txt)
 
 ./bundle.sh
-if [ $? != 0 ]; then
-  command echo "failed to bundle." >&2
-  command echo "submission has cancelled." >&2
+if ! mycmd; then
+  echo "failed to bundle." >&2
+  echo "submission has cancelled." >&2
   exit 1
 fi
 
 build_submission_release
-if [ $? != 0 ]; then
+if ! mycmd; then
   command echo "compile error." >&2
   command echo "submission has cancelled." >&2
   exit 1
 fi
 
-if [ $force_submit == 1 ]; then
-  submit $url
+if [ $force_submit = 1 ]; then
+  submit "$url"
   exit $?
 fi
 
 oj t -S -c $RUN_SUBMISSION_RELEASE
-if [ $? == 0 ]; then
-  command echo "test passed."
-  command echo -e "submitting to \e[34m${url}\e[m..."
-  submit $url
+if mycmd; then
+  echo "test passed."
+  printf %s "submitting to \e[34m${url}\e[m..."
+  submit "$url"
 else
-  command echo -e "\e[31mtest failed!\e[m" >&2
-  command echo "submission has cancelled." >&2
+  printf "\e[31mtest failed!\e[m" >&2
+  echo "submission has cancelled." >&2
   exit 1
 fi

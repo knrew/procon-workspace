@@ -1,4 +1,4 @@
-shell=bash
+shell=sh
 color=always
 external-sources=true
 disable=SC2034

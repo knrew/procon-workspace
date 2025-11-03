@@ -5,50 +5,47 @@ set -eu
 . ./common.sh
 
 # oj test
-if [ $# = 0 ] || [ "$1" = "d" ]; then
+if [ $# = 0 ] || [ "$1" = "d" ] || [ "$1" = "debug" ]; then
   build_main_debug &&
-    oj t -S -c $RUN_MAIN_DEBUG
+    $OJ test --command $RUN_MAIN_DEBUG
 
 # oj test(release)
-elif [ $# = 1 ] && [ "$1" = "r" ]; then
+elif [ $# = 1 ] && { [ "$1" = "r" ] || [ "$1" = "relase" ]; }; then
   build_main_release &&
-    oj t -S -c $RUN_MAIN_RELEASE
+    $OJ test --command $RUN_MAIN_RELEASE
 
 # oj test(submission)
-elif [ $# = 1 ] && [ "$1" = "sub" ]; then
-  ./bundle.sh &&
-    build_submission_release &&
-    oj t -S -c $RUN_SUBMISSION_RELEASE
+elif [ $# = 1 ] && { [ "$1" = "s" ] || [ "$1" = "submission" ]; }; then
+  build_submission_release &&
+    $OJ test --command $RUN_SUBMISSION_RELEASE
 
 # run single sample
-elif [ $# = 2 ] && [ "$1" = "s" ]; then
+elif [ $# = 2 ] && [ "$1" = "c" ]; then
+  build_main_debug || exit 1
   in=test/sample-${2}.in
   out=test/sample-${2}.out
   if ! [ -f "$in" ]; then
-    command echo "\"${in}\" not found." >&2
+    echo "\"${in}\" not found." >&2
     exit 1
   fi
   bat "$in"
   [ -f "$out" ] && bat "$out"
-  build_main_debug &&
-    ./target/debug/main \
-      < "$in"
+  $RUN_MAIN_DEBUG < "$in"
 
 # run single sample(release)
-elif [ $# = 2 ] && [ "$1" = "sr" ]; then
+elif [ $# = 2 ] && [ "$1" = "cr" ]; then
+  build_main_release || exit 1
   in=test/sample-${2}.in
   out=test/sample-${2}.out
   if ! [ -f "$in" ]; then
-    command echo "\"${in}\" not found." >&2
+    echo "\"${in}\" not found." >&2
     exit 1
   fi
   bat "$in"
   [ -f "$out" ] && bat "$out"
-  build_main_release &&
-    ./target/release/main \
-      < "$in"
+  $RUN_MAIN_RELEASE < "$in"
 
 else
-  command echo "invalid argument(s)." >&2
+  echo "invalid argument(s)." >&2
   exit 1
 fi

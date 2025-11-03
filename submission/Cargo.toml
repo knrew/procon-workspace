@@ -5,8 +5,8 @@ name        = "submission"
 publish     = false
 version     = "0.1.0"
 
-[profile.release]
-lto = true
+# [profile.release]
+# lto = true
 
 [[bin]]
 name = "submission"

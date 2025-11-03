@@ -1,5 +1,7 @@
 #! /bin/env sh
 
+OJ="uv run oj"
+
 CARGO="cargo +1.89.0"
 
 #
@@ -27,7 +29,8 @@ build_submission_debug() {
 }
 
 build_submission_release() {
-  $CARGO build --release --package submission --bin submission
+  ./bundle.sh &&
+    $CARGO build --release --package submission --bin submission
 }
 
 RUN_SUBMISSION_DEBUG=./target/debug/submission

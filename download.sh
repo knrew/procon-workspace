@@ -2,6 +2,8 @@
 
 set -eu
 
+. ./common.sh
+
 if [ $# != 1 ]; then
   echo "invalid argument(s)." >&2
   echo "input URL." >&2
@@ -9,14 +11,14 @@ if [ $# != 1 ]; then
 fi
 
 if [ -e ./test ]; then
-  command rm -rf ./test
+  rm -rf ./test
 fi
 
 if [ -e ./.url.txt ]; then
-  command rm ./.url.txt
+  rm ./.url.txt
 fi
 
 url=$1
 
+$OJ download "$url"
 echo "$url" > ./.url.txt
-oj download "$url"

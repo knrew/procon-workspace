@@ -3,7 +3,7 @@
 . ./common.sh
 
 submit() {
-  oj submit -l rust "$1" submission/submission.rs
+  $OJ submit -l rust "$1" submission/submission.rs
 }
 
 if [ $# -ge 2 ]; then
@@ -48,7 +48,7 @@ if [ $force_submit = 1 ]; then
   exit $?
 fi
 
-oj t -S -c $RUN_SUBMISSION_RELEASE
+$OJ test --command $RUN_SUBMISSION_RELEASE
 if mycmd; then
   echo "test passed."
   printf %s "submitting to \e[34m${url}\e[m..."

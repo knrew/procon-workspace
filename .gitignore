@@ -1,6 +1,7 @@
 /target
 /samples
 /.url.txt
+/.tmp.*
 /submission/*
 !/submission/Cargo.toml
 src/*

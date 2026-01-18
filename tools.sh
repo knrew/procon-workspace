@@ -60,6 +60,68 @@ build_submission() {
 
 }
 
+parse_common_options() {
+  submission=0
+  release=0
+  debug=0
+  case_id=-1
+  unknown_option=""
+
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --submission | -s)
+        submission=1
+        ;;
+      --release | -r)
+        release=1
+        ;;
+      --debug | -d)
+        debug=1
+        ;;
+      --case | -c)
+        [ $# -ge 2 ] || error "--case requires value"
+        case_id=$2
+        shift
+        ;;
+      --help | -h)
+        usage
+        exit 0
+        ;;
+      *)
+        unknown_option=$1
+        break
+        ;;
+    esac
+    shift
+  done
+
+}
+
+build_and_get_cmd() {
+  if [ "$debug" = 1 ] && [ "$release" = 1 ]; then
+    error "--debug and --release cannot be used together"
+  fi
+
+  if [ "$submission" = 0 ]; then
+    if [ "$release" = 1 ]; then
+      build_main "release"
+      echo "$BIN_MAIN_RELEASE"
+    else
+      build_main "debug"
+      echo "$BIN_MAIN_DEBUG"
+    fi
+  else
+    bundle
+    if [ "$debug" = 1 ]; then
+      build_submission "debug"
+      echo "$BIN_SUBMISSION_DEBUG"
+    else
+      build_submission "release"
+      echo "$BIN_SUBMISSION_RELEASE"
+    fi
+  fi
+}
+
 download_command() {
   url=""
 
@@ -99,158 +161,28 @@ bundle_command() {
 }
 
 build_command() {
-  submission=0
-  release=0
-  debug=0
-
-  while [ $# -gt 0 ]; do
-    case "$1" in
-      --submission | -s)
-        submission=1
-        ;;
-      --release | -r)
-        release=1
-        ;;
-      --debug | -d)
-        debug=1
-        ;;
-      --help | -h)
-        usage
-        exit 0
-        ;;
-      *)
-        error "unknown option for build: $1"
-        ;;
-    esac
-    shift
-  done
-
-  if [ "$debug" = 1 ] && [ "$release" = 1 ]; then
-    error "--debug and --release cannot be used together"
+  parse_common_options "$@"
+  if [ -n "$unknown_option" ]; then
+    error "unknown option for build: $unknown_option"
   fi
-
-  if [ "$submission" = 0 ]; then
-    if [ "$release" = 1 ]; then
-      build_main "release"
-    else
-      build_main "debug"
-    fi
-  else
-    bundle
-    if [ "$debug" = 1 ]; then
-      build_submission "debug"
-    else
-      build_submission "release"
-    fi
-  fi
+  build_and_get_cmd > /dev/null
 }
 
 run_command() {
-  submission=0
-  release=0
-  debug=0
-
-  while [ $# -gt 0 ]; do
-    case "$1" in
-      --submission | -s)
-        submission=1
-        ;;
-      --release | -r)
-        release=1
-        ;;
-      --debug | -d)
-        debug=1
-        ;;
-      --help | -h)
-        usage
-        exit 0
-        ;;
-      *)
-        error "unknown option for run: $1"
-        ;;
-    esac
-    shift
-  done
-
-  if [ "$debug" = 1 ] && [ "$release" = 1 ]; then
-    error "--debug and --release cannot be used together"
+  parse_common_options "$@"
+  if [ -n "$unknown_option" ]; then
+    error "unknown option for run: $unknown_option"
   fi
-
-  if [ "$submission" = 0 ]; then
-    if [ "$release" = 1 ]; then
-      build_main "release"
-      $BIN_MAIN_RELEASE
-    else
-      build_main "debug"
-      $BIN_MAIN_DEBUG
-    fi
-  else
-    bundle
-    if [ "$debug" = 1 ]; then
-      build_submission "debug"
-      $BIN_SUBMISSION_DEBUG
-    else
-      build_submission "release"
-      $BIN_SUBMISSION_RELEASE
-    fi
-  fi
+  cmd=$(build_and_get_cmd)
+  $cmd
 }
 
 test_command() {
-  submission=0
-  case_id=-1
-  release=0
-  debug=0
-
-  while [ $# -gt 0 ]; do
-    case "$1" in
-      --submission | -s)
-        submission=1
-        ;;
-      --case | -c)
-        [ $# -ge 2 ] || error "--case requires value"
-        case_id=$2
-        shift
-        ;;
-      --release | -r)
-        release=1
-        ;;
-      --debug | -d)
-        debug=1
-        ;;
-      --help | -h)
-        usage
-        exit 0
-        ;;
-      *)
-        error "unknown option for test: $1"
-        ;;
-    esac
-    shift
-  done
-
-  if [ "$debug" = 1 ] && [ "$release" = 1 ]; then
-    error "--debug and --release cannot be used together"
+  parse_common_options "$@"
+  if [ -n "$unknown_option" ]; then
+    error "unknown option for test: $unknown_option"
   fi
-
-  if [ "$submission" = 0 ]; then
-    if [ "$release" = 1 ]; then
-      build_main "release"
-      cmd=$BIN_MAIN_RELEASE
-    else
-      build_main "debug"
-      cmd=$BIN_MAIN_DEBUG
-    fi
-  else
-    bundle
-    if [ "$debug" = 1 ]; then
-      build_submission "debug"
-      cmd=$BIN_SUBMISSION_DEBUG
-    else
-      build_submission "release"
-      cmd=$BIN_SUBMISSION_RELEASE
-    fi
-  fi
+  cmd=$(build_and_get_cmd)
 
   if [ "$case_id" = -1 ]; then
     $OJ test --directory "$SAMPLES_DIR" --command "$cmd"
